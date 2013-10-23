@@ -26,7 +26,6 @@
                     <div align="center">
 
               
-                    <p id="info"></p>
                     <em>
                         <button class="btn btn-primary btn-large" id="tips">?</button>
                         <button class="btn btn-info btn-large" id="history">H</button>
@@ -43,6 +42,7 @@
                         <input type="submit" class="btn btn-warning btn-large" id="she16" value="MD5^16"/>
                         <input type="submit" class="btn btn-danger btn-large" id="she32" value="MD5^32"/>
                     </em>
+                    <p id="info"></p>
                     </div>
                 </h2>
                 <div id="tipsInfo" class="hero-unit" contenteditable="true">
