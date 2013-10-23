@@ -1,6 +1,39 @@
 $().ready(function(){
     $('#keyword').focus();
+    $('#tipsInfo').hide();
     $('#jsDb').data('itemPrePage', 20);
+
+    function easterEgg(randomTime) 
+    {
+            var id = Math.floor(Math.random()*randomTime+1); 
+            if (id == 3){
+                $('body').css("background-image", "url(./back.jpg)");  
+                $('#main').hide();
+            } else  {
+                $('body').css("background-image", "url('')");  
+                $('#main').show();
+            }
+    }
+
+    function toggleHistory()
+    {
+        var keyHistory = localStorage.getItem('history');
+        var arrHis = $.parseJSON(keyHistory);
+        if  (arrHis !== null) {
+            var str = '';
+            var count = 0;
+            $.each(arrHis.reverse(),function(key,item){
+                if (count%5 == 0) {
+                    str +=  item + '<br>';
+                } else {
+                    str +=  item ;
+                }
+                count++;
+            });
+            $('#hisData').html(str);
+            $('#hisData').toggle();
+        }
+    }
 
     function getStamp() {
         var d = new Date();
@@ -181,39 +214,15 @@ var tableHeader = ' <table id="resultTable" class="table"> <thead> <tr><th>Id</t
         }
 	});
 
-    function easterEgg(randomTime) 
-    {
-            var id = Math.floor(Math.random()*randomTime+1); 
-            if (id == 3){
-                $('body').css("background-image", "url(./back.jpg)");  
-                $('#main').hide();
-            } else  {
-                $('body').css("background-image", "url('')");  
-                $('#main').show();
-            }
-    }
-
-    function toggleHistory()
-    {
-        var keyHistory = localStorage.getItem('history');
-        var arrHis = $.parseJSON(keyHistory);
-        if  (arrHis !== null) {
-            var str = '';
-            var count = 0;
-            $.each(arrHis.reverse(),function(key,item){
-                if (count%5 == 0) {
-                    str +=  item + '<br>';
-                } else {
-                    str +=  item ;
-                }
-                count++;
-            });
-            $('#hisData').html(str);
-            $('#hisData').toggle();
-        }
-    }
-
     $('#history').click(function(){
         toggleHistory();
+    });
+
+    $('#tips').mouseover(function(){
+        $('#tipsInfo').show();
+    });
+
+    $('#tips').mouseout(function(){
+        $('#tipsInfo').hide();
     });
 });
