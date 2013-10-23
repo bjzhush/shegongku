@@ -18,6 +18,9 @@ $().ready(function(){
     }
 
     function sendQuery(limit, useMd5){
+        if ($('#keyword').val().length == 0) {
+            return;
+        }
        // record query history via html5 localStorage
        if (limit == 0) {
            var jsonFromStorage = localStorage.getItem('history');
@@ -158,6 +161,9 @@ var tableHeader = ' <table id="resultTable" class="table"> <thead> <tr> <th> 来
                         sendQuery(newLimit, $('#jsDb').data('useMd5'));
                     }
             }
+        /**
+         *  cursor down 
+         */
         } else if (key == 38) {
             if ($('#keyword').is(':focus')) {
                 //should do nothing here
