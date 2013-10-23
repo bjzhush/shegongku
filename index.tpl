@@ -26,7 +26,7 @@
                     <div align="center">
 
               
-                    <p id="info" contenteditable="true"></p>
+                    <p id="info"></p>
                     <em>
                         <button class="btn btn-primary btn-large" id="tips">?</button>
                         <button class="btn btn-info btn-large" id="history">H</button>

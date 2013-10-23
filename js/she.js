@@ -110,8 +110,12 @@ var tableHeader = ' <table id="resultTable" class="table"> <thead> <tr><th>Id</t
                         tableHeader += '</tr>';
                     })
                     tableHeader += ' </tbody> </table>';
+                    $('#resbox').hide();
                     $('#resbox').html(tableHeader);
+                    $('#resbox').fadeIn("slow");
+                    $('#info').hide();
                     $('#info').html('Sphinx: <font color="#ff0000">' + data.data.sphinxCost + '</font> S!' + ' Mysql :<font color="#ff0000">' + data.data.mysqlCost + ' </font>S!' + ' Total : <font color="#ff0000">' + data.data.totalCost + ' </font>S! TotalFound <font color="#04b431">'+data.data.resultCount +'</font>, Now start at No. <font color="#04b431">' + data.data.currentLimit + "</font>");
+                    $('#info').fadeIn("normal");
                     $('#jsDb').data('resultCount', data.data.resultCount);
                     $('#jsDb').data('nowLimit', data.data.currentLimit);
                 }
