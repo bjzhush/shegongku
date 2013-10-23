@@ -27,7 +27,6 @@
 
               
                     <em>
-                        <button class="btn btn-primary btn-large" id="tips">?</button>
                         <button class="btn btn-info btn-large" id="history">H</button>
                         <select id='searchMode' class="selectpicker">
                             <option value='SPH_MATCH_FULLSCAN'>完整扫描</option>
@@ -41,6 +40,7 @@
                         <input type="submit" class="btn btn-success btn-large active" id="she" value="搜"/>
                         <input type="submit" class="btn btn-warning btn-large" id="she16" value="MD5^16"/>
                         <input type="submit" class="btn btn-danger btn-large" id="she32" value="MD5^32"/>
+                        <button class="btn btn-primary btn-large" id="tips">?</button>
                     </em>
                     <p id="info"></p>
                     </div>
