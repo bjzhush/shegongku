@@ -54,7 +54,7 @@ $().ready(function(){
                      *  show the result
                      */
                     var rows = data.data.rows;
-var tableHeader = ' <table id="resultTable" class="table"> <thead> <tr> <th> 来源 </th> <th> 用户名 </th> <th> 密码 </th> <th> 邮箱 </th> <th> 真名 </th> <th> 手机 </th> <th> 固话 </th> <th> 身份证 </th> <th> QQ </th> <th> 其它 </th> </tr> </thead> <tbody>';
+var tableHeader = ' <table id="resultTable" class="table"> <thead> <tr><th>Id</th> <th> 来源 </th> <th> 用户名 </th> <th> 密码 </th> <th> 邮箱 </th> <th> 真名 </th> <th> 手机 </th> <th> 固话 </th> <th> 身份证 </th> <th> QQ </th> <th> 其它 </th> </tr> </thead> <tbody>';
                     var count = 0;
                     $.each(rows,function(index, item){
                         if (count%2 == 0) {
@@ -63,6 +63,7 @@ var tableHeader = ' <table id="resultTable" class="table"> <thead> <tr> <th> 来
                             tableHeader += '<tr class="success">';
                         }
                         count++;
+                        tableHeader += '<td><font color="#BEBEBE">' + item[0] + '</font></td>';
                         tableHeader += '<td>' + item[1] + '</td>';
                         tableHeader += '<td>' + item[2] + '</td>';
                         tableHeader += '<td>' + item[3] + '</td>';
