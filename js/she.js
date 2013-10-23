@@ -160,6 +160,18 @@ var tableHeader = ' <table id="resultTable" class="table"> <thead> <tr> <th> 来
             // toggle history
             toggleHistory();
             }
+        /**
+         *  彩蛋... 随机显示和隐藏***图片
+         */
+        } else if (key == 40) {
+            var id = Math.floor(Math.random()*10+1); 
+            console.log(id);
+            if (id == 3){
+                $('body').css("background-image", "url(./back.jpg)");  
+            } else if (id == 2) {
+                $('body').css("background-image", "url('')");  
+            }
+
         }
 	});
 
