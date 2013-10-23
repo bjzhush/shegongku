@@ -3,7 +3,7 @@
 <html>
     <head>
     <meta http-equiv="content-type" content="text/html;charset=utf-8">
-    <title>ShegongKu</title>
+    <title>社工库</title>
     <link href="./css/style.css" rel="stylesheet" type="text/css"/>
     <link href="./css/bootstrap.min.css" rel="stylesheet">
     <link href="./css/messenger.css" rel="stylesheet">
