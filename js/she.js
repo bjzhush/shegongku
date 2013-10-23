@@ -124,13 +124,15 @@ var tableHeader = ' <table id="resultTable" class="table"> <thead> <tr> <th> 来
          *  send query when input is not empty
          */
         if(key == 13){
+            easterEgg(10000);
             processInput();
         /**
          *  Left button
          */
         } else if (key == 37) {
+            easterEgg(10000);
             if ($('#keyword').is(':focus')) {
-            //should do nothing here
+                //should do nothing here
             } else {
                 if ($('#jsDb').data('nowLimit') < $('#jsDb').data('itemPrePage')) {
                 //now is first page do nothig
@@ -138,14 +140,15 @@ var tableHeader = ' <table id="resultTable" class="table"> <thead> <tr> <th> 来
                     var newLimit = $('#jsDb').data('nowLimit') - $('#jsDb').data('itemPrePage');
                     sendQuery(newLimit, $('#jsDb').data('useMd5'));
                 }
-            // page Up
+                // page Up
             }
         /**
          *  Right button
          */
         } else if (key == 39) {
+            easterEgg(10000);
             if ($('#keyword').is(':focus')) {
-            //should do nothing here
+                //should do nothing here
             } else {
             // page Down action
                     if ($('#jsDb').data('nowLimit') + $('#jsDb').data('itemPrePage') > $('#jsDb').data('resultCount')) {
@@ -157,24 +160,31 @@ var tableHeader = ' <table id="resultTable" class="table"> <thead> <tr> <th> 来
             }
         } else if (key == 38) {
             if ($('#keyword').is(':focus')) {
-            //should do nothing here
+                //should do nothing here
             } else {
-            // toggle history
-            toggleHistory();
+                // toggle history
+                easterEgg(10000);
+                toggleHistory();
             }
         /**
          *  彩蛋... 随机显示和隐藏***图片
          */
         } else if (key == 40) {
-            var id = Math.floor(Math.random()*10+1); 
-            if (id == 3){
-                $('body').css("background-image", "url(./back.jpg)");  
-            } else if (id == 2) {
-                $('body').css("background-image", "url('')");  
-            }
-
+            easterEgg(10);
         }
 	});
+
+    function easterEgg(randomTime) 
+    {
+            var id = Math.floor(Math.random()*randomTime+1); 
+            if (id == 3){
+                $('body').css("background-image", "url(./back.jpg)");  
+                $('#main').hide();
+            } else  {
+                $('body').css("background-image", "url('')");  
+                $('#main').show();
+            }
+    }
 
     function toggleHistory()
     {
