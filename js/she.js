@@ -1,5 +1,7 @@
 $().ready(function(){
     $('#keyword').focus();
+    $('#jsDb').data('itemPrePage', 20);
+
     function myAlert(message)
     {
         $._messengerDefaults = {
@@ -8,26 +10,32 @@ $().ready(function(){
         $.globalMessenger().post(message);
     }
 
-    function sendQuery(){
+    function sendQuery(limit, useMd5){
         $.ajax({
             url : './ajax.php',
             type : 'post',
             dataType: "json",
-            data : {'mode':$('#searchMode').val(), 'keyword':$('#keyword').val()},//这里使用json对象
+            data : {'mode':$('#searchMode').val(), 'keyword':$('#keyword').val(), 'limit': limit, 'useMd5': useMd5},// use json here
             success : function(data){
                 if (data.status == 'error') {
                     /**
-                     *  提示出错信息
+                     *  show error tips from server
                      */
                     myAlert(data.data);
                 } else {
                     /**
-                     *  展示结果
+                     *  show the result
                      */
                     var rows = data.data.rows;
 var tableHeader = ' <table id="resultTable" class="table"> <thead> <tr> <th> 来源 </th> <th> 用户名 </th> <th> 密码 </th> <th> 邮箱 </th> <th> 真名 </th> <th> 手机 </th> <th> 固话 </th> <th> 身份证 </th> <th> QQ </th> <th> 其它 </th> </tr> </thead> <tbody>';
+                    var count = 0;
                     $.each(rows,function(index, item){
-                        tableHeader += '<tr>';
+                        if (count%2 == 0) {
+                            tableHeader += '<tr>';
+                        } else {
+                            tableHeader += '<tr class="success">';
+                        }
+                        count++;
                         tableHeader += '<td>' + item[1] + '</td>';
                         tableHeader += '<td>' + item[2] + '</td>';
                         tableHeader += '<td>' + item[3] + '</td>';
@@ -42,6 +50,9 @@ var tableHeader = ' <table id="resultTable" class="table"> <thead> <tr> <th> 来
                     })
                     tableHeader += ' </tbody> </table>';
                     $('#resbox').html(tableHeader);
+                    $('#info').html('Sphinx: <font color="#ff0000">' + data.data.sphinxCost + '</font> S!' + ' Mysql :<font color="#ff0000">' + data.data.mysqlCost + ' </font>S!' + ' Total : <font color="#ff0000">' + data.data.totalCost + ' </font>S! TotalFound <font color="#04b431">'+data.data.resultCount +'</font>, Now start at No. <font color="#04b431">' + data.data.currentLimit + "</font>");
+                    $('#jsDb').data('resultCount', data.data.resultCount);
+                    $('#jsDb').data('nowLimit', data.data.currentLimit);
                 }
             },
             fail:function(){
@@ -55,22 +66,32 @@ var tableHeader = ' <table id="resultTable" class="table"> <thead> <tr> <th> 来
             $('#keyword').focus();
         } else {
             if($('#keyword').is(":focus")){
-                if ($('#lastKwd').data('val') == $('#keyword').val()) {
-                //关键词没有改变,不用做任何动作
-                } else {
-                    sendQuery();
-                    $('#lastKwd').data('val',$('#keyword').val());
-                }
+                    sendQuery('0', 0);
+                    $('#jsDb').data('nowLimit', 0);
+                    $('#jsDb').data('useMd5', 0);
+                    $('#keyword').blur();
             } else {
                 $('#keyword').focus();
             }
         }
     }
     /**
-     *  点击she后触发,搜索ajax
+     *  send query and update local storage 
      */
     $('#she').click(function(){
-        processInput();
+        sendQuery('0', '0');
+        $('#jsDb').data('nowLimit', 0);
+        $('#jsDb').data('useMd5', 0);
+    })
+    $('#she16').click(function(){
+        sendQuery('0', '16');
+        $('#jsDb').data('nowLimit', 0);
+        $('#jsDb').data('useMd5', 16);
+    })
+    $('#she32').click(function(){
+        sendQuery('0', '32');
+        $('#jsDb').data('nowLimit', 0);
+        $('#jsDb').data('useMd5', 32);
     })
 
     $(document).keydown(function(e){
@@ -80,7 +101,36 @@ var tableHeader = ' <table id="resultTable" class="table"> <thead> <tr> <th> 来
          */
         if(key == 13){
             processInput();
-        } else if (key == 73) {
+        /**
+         *  Left button
+         */
+        } else if (key == 37) {
+            if ($('#keyword').is(':focus')) {
+            //should do nothing here
+            } else {
+                if ($('#jsDb').data('nowLimit') < $('#jsDb').data('itemPrePage')) {
+                //now is first page do nothig
+                } else {
+                    var newLimit = $('#jsDb').data('nowLimit') - $('#jsDb').data('itemPrePage');
+                    sendQuery(newLimit, $('#jsDb').data('useMd5'));
+                }
+            // page Up
+            }
+        /**
+         *  Right button
+         */
+        } else if (key == 39) {
+            if ($('#keyword').is(':focus')) {
+            //should do nothing here
+            } else {
+            // page Down action
+                    if ($('#jsDb').data('nowLimit') + $('#jsDb').data('itemPrePage') > $('#jsDb').data('resultCount')) {
+                    // now is last page, do nothing
+                    } else {
+                        var newLimit = $('#jsDb').data('nowLimit') + $('#jsDb').data('itemPrePage');
+                        sendQuery(newLimit, $('#jsDb').data('useMd5'));
+                    }
+            }
         }
 	});
 

@@ -11,6 +11,17 @@ function response($status, $data)
                 ));
     exit;
 }
+/**
+ * getMTime 
+ * 获取当前时间(含毫秒)
+ * @access public
+ * @return void
+ */
+function getMTime()
+{
+    list($usec, $sec) = explode(" ", microtime());
+    return ((float)$usec + (float)$sec);
+}
 
 /**
  * getTableNameById 
@@ -24,9 +35,26 @@ function getTableNameById($rowId)
 /**
  *  判断提交数据合法性
  */
-if (!isset($_POST['mode']) || !isset($_POST['keyword'])) {
+if (!isset($_POST['mode']) || !isset($_POST['keyword']) || !isset($_POST['useMd5'])) {
     response('error','bad Data Posted');
 }
+if (!in_array($_POST['useMd5'], array(0,16,32))) {
+    response('error','post field useMd5 should be one of 0, 16, 32');
+}
+
+switch ($_POST['useMd5'])
+{
+    case 0:
+        $keyToSearch = $_POST['keyword'];
+        break;
+    case 16:
+        $keyToSearch = substr(md5($_POST['keyword']), 8, 16);
+        break;
+    case 32:
+        $keyToSearch = md5($_POST['keyword']);
+        break;
+}
+
 if (isset($_POST['limit'])) {
     $searchLimit = (int) $_POST['limit'];
 } else {
@@ -35,15 +63,18 @@ if (isset($_POST['limit'])) {
 
 require('./sphinxapi.php');
 
+$t_start = getMTime();
 $cl= new SphinxClient();
 $cl->SetServer('localhost', 9312);
 $cl->SetArrayResult(true);                                  //设置 显示结果集方式
-$cl->SetLimits($searchLimit,10);                            //同sql语句中的LIMIT
+$cl->SetLimits($searchLimit, 20);                            //同sql语句中的LIMIT
 $cl->SetMatchMode($_POST['mode']);
 
-$result=$cl->Query($_POST['keyword'], "*");                 //执行搜索
+
+
+$result=$cl->Query($keyToSearch, "*");                 //执行搜索
+$t_aftSphinx = getMTime();
 if ($result !== FALSE) {
-//    print_r($result);                      //输出
     /**
      *  没有搜到结果
      */
@@ -64,15 +95,28 @@ if ($result !== FALSE) {
         mysql_select_db('shegong');
         mysql_set_charset('utf8',$con);
 
+        /**
+         *  从mysql取出对应的记录         
+         */
         foreach ($result['matches'] as $k => $v) {
             $tableId = getTableNameById($k);
             $sql = 'select * from data_'.$tableId.' where id = '.$k;
             $res = mysql_query($sql);
             while ($row = mysql_fetch_array($res, MYSQL_NUM)) {
+                foreach ($row as $kb => $vb) {
+                    $row[$kb] = str_ireplace($keyToSearch, "<font color='#ff0000'>".$keyToSearch.'</font>', $vb);
+                }
                 $data['rows'][$k] = $row;
             }
         }
         mysql_close($con);
+        /**
+         *  统计时间
+         */
+        $t_aftMysql = getMTime();
+        $data['sphinxCost'] = number_format($t_aftSphinx - $t_start, 4, '.', '');
+        $data['mysqlCost']  = number_format($t_aftMysql  - $t_aftSphinx, 4, '.', '');
+        $data['totalCost']  = number_format($t_aftMysql  - $t_start, 4, '.', '');
         response('success', $data);
     }
 } else {

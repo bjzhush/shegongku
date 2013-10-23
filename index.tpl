@@ -15,7 +15,8 @@
     <script src="./js/json2Table.js"></script>
     </head>
 <body>
-<input type="hidden" id="lastKwd">
+<input type="hidden" id="jsDb">
+
 <div class="container-fluid">
     <div class="row-fluid">
 
@@ -23,6 +24,7 @@
             <div>
                 <h2>
                     <div align="center">
+                    <p id="info" contenteditable="true"></p>
                     <em>
                         <select id='searchMode' class="selectpicker">
                             <option value='SPH_MATCH_EXTENDED2'>Extend</option>
@@ -31,7 +33,9 @@
                             <option value='SPH_MATCH_ANY'>任意查询词</option>
                             <option value='SPH_MATCH_ALL'>所有查询词</option>
                         </select>
-                        <input id="keyword" class="input-medium search-query" type="text" /><button id="she" class="btn" type="submit">查找</button>
+                        <input id="keyword" class="input-medium search-query" type="text" /><button id="she" class="btn" type="submit">查找</button>||<button id="she16" class="btn" type="submit">搜Md5(16)</button>||<button id="she32" class="btn" type="submit">搜Md5(32)</button>
+
+
                     </em>
                     </div>
                 </h2>
