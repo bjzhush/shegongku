@@ -2,6 +2,13 @@ $().ready(function(){
     $('#keyword').focus();
     $('#jsDb').data('itemPrePage', 20);
 
+    function getStamp() {
+        var d = new Date();
+        var mm = d.getMilliseconds(), hh = d.getHours(),
+            MM = d.getMinutes(), ss = d.getSeconds();
+        return  d.getDate() +'日 ' + (hh < 10 ? "0" : "") + hh + (MM < 10 ? ":0" : ":") + MM + (ss < 10 ? ":0" : ":") + ss ;
+    };
+
     function myAlert(message)
     {
         $._messengerDefaults = {
@@ -11,6 +18,21 @@ $().ready(function(){
     }
 
     function sendQuery(limit, useMd5){
+       // record query history via html5 localStorage
+       var jsonFromStorage = localStorage.getItem('history');
+        if (jsonFromStorage == undefined ) {
+            keyHistory = [];
+        } else {
+            keyHistory = $.parseJSON(jsonFromStorage);
+        }
+        if (keyHistory.length >20) {
+            keyHistory.shift();
+        }
+
+        keyHistory.push('<font color="#f00078">' + $('#keyword').val() + '</font> | ' + getStamp());
+        var jsonStr = JSON.stringify(keyHistory);
+        localStorage.setItem('history', jsonStr); 
+
         $.ajax({
             url : './ajax.php',
             type : 'post',
@@ -131,7 +153,37 @@ var tableHeader = ' <table id="resultTable" class="table"> <thead> <tr> <th> 来
                         sendQuery(newLimit, $('#jsDb').data('useMd5'));
                     }
             }
+        } else if (key == 38) {
+            if ($('#keyword').is(':focus')) {
+            //should do nothing here
+            } else {
+            // toggle history
+            toggleHistory();
+            }
         }
 	});
 
+    function toggleHistory()
+    {
+        var keyHistory = localStorage.getItem('history');
+        var arrHis = $.parseJSON(keyHistory);
+        if  (arrHis !== null) {
+            var str = '';
+            var count = 0;
+            $.each(arrHis.reverse(),function(key,item){
+                if (count%5 == 0) {
+                    str +=  item + '<br>';
+                } else {
+                    str +=  item ;
+                }
+                count++;
+            });
+            $('#hisData').html(str);
+            $('#hisData').toggle();
+        }
+    }
+
+    $('#history').click(function(){
+        toggleHistory();
+    });
 });

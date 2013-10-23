@@ -26,6 +26,7 @@
                     <div align="center">
                     <p id="info" contenteditable="true"></p>
                     <em>
+                        <span id="history" >H</span>
                         <select id='searchMode' class="selectpicker">
                             <option value='SPH_MATCH_EXTENDED2'>Extend</option>
                             <option value='SPH_MATCH_BOOLEAN'>Boolean</option>
@@ -40,6 +41,7 @@
                     </div>
                 </h2>
             </div>
+            <span id="hisData"></span>
             <div id='resbox'>
             </div>
 
