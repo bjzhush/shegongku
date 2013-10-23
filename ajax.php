@@ -78,7 +78,6 @@ $cl->SetLimits($searchLimit, 20);                            //同sql语句中�
 $cl->SetMatchMode($_POST['mode']);
 
 
-
 $result=$cl->Query($keyToSearch, "*");                 //执行搜索
 $t_aftSphinx = getMTime();
 if ($result !== FALSE) {
@@ -102,6 +101,8 @@ if ($result !== FALSE) {
         mysql_select_db('shegong');
         mysql_set_charset('utf8',$con);
 
+        $keyArr = explode(' ', $keyToSearch);
+
         /**
          *  从mysql取出对应的记录         
          */
@@ -112,6 +113,11 @@ if ($result !== FALSE) {
             while ($row = mysql_fetch_array($res, MYSQL_NUM)) {
                 foreach ($row as $kb => $vb) {
                     $row[$kb] = str_ireplace($keyToSearch, "<font color='#ff0000'>".$keyToSearch.'</font>', $vb);
+                    if (count($keyArr) > 1) {
+                        foreach ($keyArr as $kc => $vc) {
+                            $row[$kb] = str_ireplace($vc, "<font color='#bf0060'>".$vc.'</font>', $vb);
+                        }
+                    }
                 }
                 $data['rows'][$k] = $row;
             }
