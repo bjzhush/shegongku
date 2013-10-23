@@ -61,6 +61,13 @@ if (isset($_POST['limit'])) {
     $searchLimit = 0;
 }
 
+/**
+ *  由于sphinx配置等原因,目前暂时只展示前1000个
+ */
+if ($searchLimit >979) {
+    response('error','由于sphinx原因,目前暂时只展示前1000个,你可以换一下关键词!');
+}
+
 require('./sphinxapi.php');
 
 $t_start = getMTime();
