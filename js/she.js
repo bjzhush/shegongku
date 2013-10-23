@@ -19,19 +19,21 @@ $().ready(function(){
 
     function sendQuery(limit, useMd5){
        // record query history via html5 localStorage
-       var jsonFromStorage = localStorage.getItem('history');
-        if (jsonFromStorage == undefined ) {
-            keyHistory = [];
-        } else {
-            keyHistory = $.parseJSON(jsonFromStorage);
-        }
-        if (keyHistory.length >20) {
-            keyHistory.shift();
-        }
+       if (limit == 0) {
+           var jsonFromStorage = localStorage.getItem('history');
+            if (jsonFromStorage == undefined ) {
+                keyHistory = [];
+            } else {
+                keyHistory = $.parseJSON(jsonFromStorage);
+            }
+            if (keyHistory.length >20) {
+                keyHistory.shift();
+            }
 
-        keyHistory.push('<font color="#f00078">' + $('#keyword').val() + '</font> | ' + getStamp());
-        var jsonStr = JSON.stringify(keyHistory);
-        localStorage.setItem('history', jsonStr); 
+            keyHistory.push('<font color="#f00078">' + $('#keyword').val() + '</font> | ' + getStamp());
+            var jsonStr = JSON.stringify(keyHistory);
+            localStorage.setItem('history', jsonStr); 
+       }
 
         $.ajax({
             url : './ajax.php',
@@ -165,7 +167,6 @@ var tableHeader = ' <table id="resultTable" class="table"> <thead> <tr> <th> 来
          */
         } else if (key == 40) {
             var id = Math.floor(Math.random()*10+1); 
-            console.log(id);
             if (id == 3){
                 $('body').css("background-image", "url(./back.jpg)");  
             } else if (id == 2) {
