@@ -15,7 +15,7 @@ $().ready(function(){
             }
     }
 
-    function toggleHistory()
+    function stuffHistory()
     {
         var keyHistory = localStorage.getItem('history');
         var arrHis = $.parseJSON(keyHistory);
@@ -31,7 +31,6 @@ $().ready(function(){
                 count++;
             });
             $('#hisData').html(str);
-            $('#hisData').toggle();
         }
     }
 
@@ -208,7 +207,8 @@ var tableHeader = ' <table id="resultTable" class="table"> <thead> <tr><th>Id</t
             } else {
                 // toggle history
                 easterEgg(10000);
-                toggleHistory();
+                stuffHistory();
+                $('#hisData').toggle();
             }
         /**
          *  彩蛋... 随机显示和隐藏***图片
@@ -218,8 +218,14 @@ var tableHeader = ' <table id="resultTable" class="table"> <thead> <tr><th>Id</t
         }
 	});
 
-    $('#history').click(function(){
-        toggleHistory();
+    $('#history').mouseover(function(){
+        stuffHistory();
+        $('#hisData').show();
+    });
+
+    $('#history').mouseout(function(){
+        stuffHistory();
+        $('#hisData').hide();
     });
 
     $('#tips').mouseover(function(){
