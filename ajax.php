@@ -120,6 +120,11 @@ if ($result !== FALSE) {
                         }
                     }
                 }
+                foreach ($row as $kd => $vd) {
+                    if (preg_match('/^[a-zA-Z0-9]{16,32}$/ui', trim($vd))) {
+                        $row[$kd] = '<a target="_blank" href="http://www.xmd5.com">'.$vd.'</a>';
+                    }
+                }
                 $data['rows'][$k] = $row;
             }
         }
