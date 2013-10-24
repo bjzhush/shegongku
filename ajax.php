@@ -74,7 +74,8 @@ $t_start = getMTime();
 $cl= new SphinxClient();
 $cl->SetServer('localhost', 9312);
 $cl->SetArrayResult(true);                                  //设置 显示结果集方式
-$cl->SetLimits($searchLimit, 20);                            //同sql语句中的LIMIT
+$cl->SetLimits($searchLimit, 20);                           //同sql语句中的LIMIT
+$cl->SetSortMode(SPH_SORT_RELEVANCE);                       //设置默认按照相关性排序 
 $cl->SetMatchMode($_POST['mode']);
 
 
