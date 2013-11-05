@@ -80,6 +80,7 @@ $().ready(function(){
                     /**
                      *  show error tips from server
                      */
+                    $('#resultTable').remove();
                     myAlert(data.data);
                 } else {
                     /**
